@@ -1,11 +1,27 @@
-Recipes = new Meteor.Collection('recipes');
+Recipes = new Mongo.Collection('recipes');
 
+
+// if (Meteor.isServer) {
+//   // This code only runs on the server
+//   Meteor.publish('recipes', function tasksPublication() {
+//     return Tasks.find();
+//   });
+// }
 
 Recipes.allow({
   insert: function(userId, doc) {
     return !!userId;
   }
-})
+});
+Ingredient = new SimpleSchema({
+  name: {
+    type: String
+  },
+  amount: {
+    type: String
+  }
+});
+
 RecipeSchema = new SimpleSchema({
   name: {
     type : String,
@@ -15,12 +31,27 @@ RecipeSchema = new SimpleSchema({
     type: String,
     label: "Description"
   },
+
+  ingredients: {
+  type: [Ingredient]
+},
+
+inMenu: {
+  type: Boolean,
+defaultValue: false,
+optional: true,
+autoform: {
+  typt: "hidden"
+}
+},
+
   author: {
     type: String,
     label: "Author",
     autoValue: function(){
       return this.userId
     },
+
     autoform: {
       type: "hidden"
     }
@@ -41,12 +72,7 @@ RecipeSchema = new SimpleSchema({
 
 Recipes.attachSchema(RecipeSchema);
 
-// if (Meteor.isServer) {
-//   // This code only runs on the server
-//   Meteor.publish('recipes', function tasksPublication() {
-//     return Tasks.find();
-//   });
-// }
+
 // // Recipes.allow({
 //     insert: function(userId, doc) {
 //         return !!userId;
