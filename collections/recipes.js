@@ -1,5 +1,11 @@
 Recipes = new Meteor.Collection('recipes');
 
+
+Recipes.allow({
+  insert: function(userId, doc) {
+    return !!userId;
+  }
+})
 RecipeSchema = new SimpleSchema({
   name: {
     type : String,
@@ -25,11 +31,15 @@ RecipeSchema = new SimpleSchema({
     label: "created At",
     autoValue: function(){
       return new Date()
+    },
+    autoform: {
+      type: "hidden"
     }
+
   }
 })
 
-Recipes.attachSchema( RecipeSchema );
+Recipes.attachSchema(RecipeSchema);
 
 // if (Meteor.isServer) {
 //   // This code only runs on the server
