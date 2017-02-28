@@ -43,6 +43,7 @@ optional: true,
 autoform: {
   typt: "hidden"
 }
+
 },
 
   author: {
